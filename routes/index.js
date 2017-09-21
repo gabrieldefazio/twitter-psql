@@ -55,8 +55,6 @@ module.exports = function makeRouterWithSockets (io) {
                 if (err) return next(err);
                 client.query('SELECT users.id FROM users LEFT JOIN tweets ON users.id = tweets.user_id WHERE users.name = $1', [req.body.name], (err, result) => {
                     if (err) return next(err);
-                    console.log(result.rows)
-                    console.log(result.rows[0].user_id, req.body.content)
                     client.query('INSERT INTO tweets (user_id, content) VALUES ($1, $2)', [result.rows[0].id, req.body.content], (err, result) => {
                         res.redirect('/');
                     })
@@ -65,6 +63,8 @@ module.exports = function makeRouterWithSockets (io) {
         }
   })
 });
+
+
 
   // // replaced this hard-coded route with general static routing in app.js
     // router.get('/stylesheets/style.css', function(req, res, next){
